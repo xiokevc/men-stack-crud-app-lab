@@ -8,8 +8,11 @@ const methodOverride = require('method-override');
 const dotenv = require('dotenv');
 const Car = require('./models/Car');
 
-// =================== Const ===================
+// =================== Get ===================
 
+app.get('/', async (req,res) => {
+    res.send('hello, friend!');
+});
 
 
 // =================== Start ===================
