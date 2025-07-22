@@ -1,40 +1,38 @@
 // =================== Const ===================
-
 const dotenv = require('dotenv');
 dotenv.config();
 
 const express = require('express');
 const mongoose = require('mongoose');
-const app = express ();
-
 const methodOverride = require('method-override');
 const Car = require('./models/Car');
 
-// Middleware
+const app = express();
+
+// =================== Middleware ===================
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
 
-
-// Connect to MongoDB
+// =================== MongoDB Connection ===================
 mongoose.connect(process.env.MONGODB_URI);
 
 mongoose.connection.on('connected', () => {
-  console.log(`Connected to MongoDB ${mongoose.connection.name}`);
+  console.log(`Connected to MongoDB: ${mongoose.connection.name}`);
 });
 
-// =================== Get ===================
+// =================== Routes ===================
 
 // Index
 app.get('/cars', async (req, res) => {
   const cars = await Car.find();
-  res.render('index', { cars });
+  res.render('index.ejs', { cars });
 });
 
 // New
 app.get('/cars/new', (req, res) => {
-  res.render('new');
+  res.render('new.ejs');
 });
 
 // Create
@@ -46,13 +44,13 @@ app.post('/cars', async (req, res) => {
 // Show
 app.get('/cars/:id', async (req, res) => {
   const car = await Car.findById(req.params.id);
-  res.render('show', { car });
+  res.render('show.ejs', { car });
 });
 
 // Edit
 app.get('/cars/:id/edit', async (req, res) => {
   const car = await Car.findById(req.params.id);
-  res.render('edit', { car });
+  res.render('edit.ejs', { car });
 });
 
 // Update
@@ -68,7 +66,6 @@ app.delete('/cars/:id', async (req, res) => {
 });
 
 // =================== Start ===================
-
 app.listen(3000, () => {
-    console.log('Listening on port 3000')
+  console.log('Listening on port 3000');
 });
