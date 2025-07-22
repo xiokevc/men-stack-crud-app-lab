@@ -5,7 +5,7 @@ dotenv.config();
 const express = require('express');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
-const Car = require('./models/Car');
+const car = require('./models/car.js');
 
 const app = express();
 
@@ -24,48 +24,55 @@ mongoose.connection.on('connected', () => {
 
 // =================== Routes ===================
 
-// Index
+// Root redirect to cars index
+app.get('/', (req, res) => {
+  res.redirect('/cars');
+});
+
+
+// Index - list all cars
 app.get('/cars', async (req, res) => {
-  const cars = await Car.find();
+  const cars = await car.find();
   res.render('index.ejs', { cars });
 });
 
-// New
+// New - form to create a new car
 app.get('/cars/new', (req, res) => {
   res.render('new.ejs');
 });
 
-// Create
+// Create - add new car to database
 app.post('/cars', async (req, res) => {
-  await Car.create(req.body);
+  await car.create(req.body);
   res.redirect('/cars');
 });
 
-// Show
+// Show - show details about one car
 app.get('/cars/:id', async (req, res) => {
-  const car = await Car.findById(req.params.id);
-  res.render('show.ejs', { car });
+  const oneCar = await car.findById(req.params.id);
+  res.render('show.ejs', { car: oneCar });
 });
 
-// Edit
+// Edit - form to edit existing car
 app.get('/cars/:id/edit', async (req, res) => {
-  const car = await Car.findById(req.params.id);
-  res.render('edit.ejs', { car });
+  const oneCar = await car.findById(req.params.id);
+  res.render('edit.ejs', { car: oneCar });
 });
 
-// Update
+// Update - update car info in database
 app.put('/cars/:id', async (req, res) => {
-  await Car.findByIdAndUpdate(req.params.id, req.body);
+  await car.findByIdAndUpdate(req.params.id, req.body);
   res.redirect(`/cars/${req.params.id}`);
 });
 
-// Delete
+// Delete - remove car from database
 app.delete('/cars/:id', async (req, res) => {
-  await Car.findByIdAndDelete(req.params.id);
+  await car.findByIdAndDelete(req.params.id);
   res.redirect('/cars');
 });
 
 // =================== Start ===================
-app.listen(3000, () => {
-  console.log('Listening on port 3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
 });

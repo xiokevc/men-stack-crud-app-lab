@@ -1,10 +1,41 @@
-<h1>Edit <%= car.year %> <%= car.make %> <%= car.model %></h1>
-<form action="/cars/<%= car._id %>?_method=PUT" method="POST">
-  <input type="text" name="make" value="<%= car.make %>" required />
-  <input type="text" name="model" value="<%= car.model %>" required />
-  <input type="number" name="year" value="<%= car.year %>" />
-  <input type="text" name="image" value="<%= car.image %>" />
-  <button type="submit">Update</button>
-</form>
-<a href="/cars">Cancel</a>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Car</title>
+  </head>
+  <body>
+    <h1>Edit <%= car.year %> <%= car.make %> <%= car.model %></h1>
 
+    <form action="/cars/<%= car._id %>?_method=PUT" method="POST">
+      <label>
+        Make:
+        <input type="text" name="make" value="<%= car.make %>" required />
+      </label>
+      <br />
+
+      <label>
+        Model:
+        <input type="text" name="model" value="<%= car.model %>" required />
+      </label>
+      <br />
+
+      <label>
+        Year:
+        <input type="number" name="year" value="<%= car.year %>" />
+      </label>
+      <br />
+
+      <label>
+        Image URL:
+        <input type="text" name="image" value="<%= car.image %>" />
+      </label>
+      <br />
+
+      <button type="submit">Update</button>
+    </form>
+
+    <a href="/cars">Cancel</a>
+  </body>
+</html>
